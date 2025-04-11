@@ -1,0 +1,27 @@
+.terminal-scroll {
+    width: 100%;
+    height: 400px;
+    background-color: #1e1e1e;
+    overflow: auto;
+  
+    scrollbar-width: thin;
+    scrollbar-color: #4c4c4c #2a2a2a;
+  }
+  
+  .terminal-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .terminal-scroll::-webkit-scrollbar-track {
+    background: #2a2a2a;
+  }
+  
+  .terminal-scroll::-webkit-scrollbar-thumb {
+    background-color: #4c4c4c;
+    border-radius: 10px;
+    border: 2px solid #2a2a2a;
+  }
+  
+  .terminal-scroll::-webkit-scrollbar-thumb:hover {
+    background: #6b6b6b;
+  }
