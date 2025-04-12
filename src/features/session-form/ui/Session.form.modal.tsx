@@ -7,7 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { ISessionItem, sessionStore } from "entities/session-item";
+import { sessionStore } from "entities/session-item";
 
 interface IProps {
   open: boolean;
@@ -21,8 +21,6 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
 
   const handleSubmit = async () => {
     if (name.trim().length > 5) {
-      const id = Math.floor(Math.random() * 100000) + 1;
-
       const sess = {
         cmd: "",
         sid: name,
@@ -34,7 +32,7 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
         method: "POST", body: JSON.stringify(sess)
       });
 
-      sessionStore.addNewSession({ id, name });
+      sessionStore.addNewSession({ name, history: [], serverId: '0' });
       onClose();
     }
   };

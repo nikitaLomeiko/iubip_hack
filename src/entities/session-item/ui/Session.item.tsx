@@ -28,7 +28,7 @@ export const SessionItem: React.FC<IProps> = (props) => {
   };
 
   return (
-    <div onClick={onClick} className="flex flex-row items-center justify-between gap-2">
+    <div onClick={onClick} className={`flex flex-row items-center justify-between gap-2`}>
       <div className="flex flex-row items-center gap-2">
         <WatchLaterIcon className="!size-4 !fill-white/70" />
         {isChanged ? (
@@ -50,10 +50,10 @@ export const SessionItem: React.FC<IProps> = (props) => {
         ) : (
           <>
             <button onClick={() => setChanged(true)}>
-              <CreateIcon className="!size-4 !fill-white/40" />
+              <CreateIcon className="!size-4 !fill-green-600/50" />
             </button>
             <button onClick={onRemove}>
-              <DeleteIcon className="!size-4 !fill-white/40" />
+              <DeleteIcon className="!size-4 !fill-red-600/50" />
             </button>
           </>
         )}

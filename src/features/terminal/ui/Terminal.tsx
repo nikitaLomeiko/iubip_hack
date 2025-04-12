@@ -15,7 +15,6 @@ export const Terminal: React.FC<IProps> = (props) => {
 
   const [verify, setVerify] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-
   const { instance, ref } = useXTerm();
 
   useEffect(() => {
@@ -42,15 +41,16 @@ export const Terminal: React.FC<IProps> = (props) => {
     instance.resize(cols, rows);
   }, [instance, containerRef]);
 
-  instance?.onData(async (data) => {
-    await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "POST", body: data });
-  });
   instance?.resize(50, 50);
 
   useEffect(() => {
+    const onDataId = instance?.onData(async (data) => {
+      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "POST", body: data });
+    });
+
     const asyncFetch = async () => {
       while (true) {
-        const data = await fetch("https://ыыыы.спб.рф/api/sessions/1/io/", { method: "GET" });
+        const data = await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "GET" });
         const peremennaya = await data.bytes();
         instance?.write(peremennaya);
 
@@ -63,7 +63,11 @@ export const Terminal: React.FC<IProps> = (props) => {
     } else {
       setVerify(true);
     }
-  }, [instance]);
+
+    return () => {
+      onDataId?.dispose()
+    }
+  }, [instance, sessionName]);
 
   return (
     <div ref={containerRef} className="rounded-lg !overflow-hidden h-full">
