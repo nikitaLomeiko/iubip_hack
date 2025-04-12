@@ -14,6 +14,8 @@ import AddLinkIcon from "@mui/icons-material/AddLink";
 import DnsIcon from "@mui/icons-material/Dns";
 
 import { TabBar } from "./components/Tabbar";
+import { KeysList } from "./components/Keys.list";
+import { KeyFormModal } from "features/key-form";
 
 const drawerWidth = 290;
 const collapsedWidth = 60;
@@ -29,6 +31,8 @@ export const Layout: React.FC<IProps> = (props) => {
 
   const [openFormSever, setOpenFormSever] = useState(false);
   const [openFormSession, setOpenFormSession] = useState(false);
+  const [openFormKey, setOpenFormKey] = useState(false);
+
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -95,7 +99,12 @@ export const Layout: React.FC<IProps> = (props) => {
               <ServerFormModal open={openFormSever} onClose={() => setOpenFormSever(false)} />
             </>
           )}
-          {tab === "keys" && <SessionsList />}
+          {tab === "keys" && (
+            <>
+              <KeysList />
+              <KeyFormModal open={openFormKey} onClose={() => setOpenFormKey(false)} />
+            </>
+          )}
           <div className="flex flex-col mt-auto gap-4">
             <Button onClick={() => setOpenFormSession(true)} className="w-full flex flex-row gap-1" variant="outlined">
               <AddLinkIcon />
@@ -105,7 +114,7 @@ export const Layout: React.FC<IProps> = (props) => {
               <DnsIcon />
               <p>Подключить сервер</p>
             </Button>
-            <Button onClick={() => setOpenFormSession(true)} className="w-full flex flex-row gap-1" variant="outlined">
+            <Button onClick={() => setOpenFormKey(true)} className="w-full flex flex-row gap-1" variant="outlined">
               <KeyIcon />
               <p>Добавить ключ</p>
             </Button>
