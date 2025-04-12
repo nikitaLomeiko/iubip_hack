@@ -1,5 +1,7 @@
 export interface IServerItem {
-    id: number,
-    adress: string,
-    //...
+  id: number;
+  name: string
+  adress: string;
+  typeAuth: "key" | "password";
+  password?: string;
 }

@@ -86,7 +86,7 @@ export const Layout: React.FC<IProps> = (props) => {
           </div>
           <Divider className="after:bg-white/30 before:bg-white/30 !mt-10">Сервера</Divider>
           <div className="mt-8">
-            <ServersList servers={["Сервер1", "Сервер2", "Сервер3"]} />
+            <ServersList />
             <Button onClick={() => setOpenFormSever(true)} className="w-full !mt-8" variant="outlined">
               Подключить сервер
             </Button>

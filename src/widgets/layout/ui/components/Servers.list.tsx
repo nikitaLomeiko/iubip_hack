@@ -1,34 +1,25 @@
-import CreateIcon from "@mui/icons-material/Create";
-import DeleteIcon from "@mui/icons-material/Delete";
-import StorageIcon from '@mui/icons-material/Storage';
+import { ServerItem, serverStore } from "entities/server-item";
+import { observer } from "mobx-react-lite";
 
-interface IProps {
-  servers: string[];
-}
-
-export const ServersList: React.FC<IProps> = (props) => {
-  const { servers } = props;
+export const ServersList: React.FC = observer(() => {
+  const {
+    state: { servers },
+  } = serverStore;
 
   return (
     <ul className="flex flex-col gap-4 px-4">
+      {servers.length === 0 && <p className="!text-white/40 !text-center !w-full">Серверов не найдено</p>}
       {servers.map((item) => (
         <li>
-          <div className="flex flex-row items-center justify-between gap-2">
-            <div className="flex flex-row items-center gap-2">
-              <StorageIcon className="!size-4 !fill-white/70" />
-              <p className="!text-sm text-white/80">{item}</p>
-            </div>
-            <div className="flex flex-row gap-2">
-              <button>
-                <CreateIcon className="!size-4 !fill-white/40" />
-              </button>
-              <button>
-                <DeleteIcon className="!size-4 !fill-white/40" />
-              </button>
-            </div>
-          </div>
+          {item.id}
+          <ServerItem
+            key={item.id}
+            server={item}
+            onClick={() => null}
+            onRemove={() => serverStore.deleteServer(item.id)}
+          />
         </li>
       ))}
     </ul>
   );
-};
+});

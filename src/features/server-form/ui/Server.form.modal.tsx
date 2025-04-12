@@ -7,16 +7,49 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { IServerItem, serverStore } from "entities/server-item";
 
-interface IProps {
+interface IProps extends Partial<IServerItem> {
   open: boolean;
   onClose: () => void;
+  isChanged?: boolean;
 }
 
 export const ServerFormModal: React.FC<IProps> = (props) => {
-  const { onClose, open } = props;
+  const { onClose, open, isChanged, adress, name, password, id } = props;
 
   const [isPassword, setShowPassword] = React.useState(false);
+  const [nameServer, setNameServer] = React.useState(name || "");
+  const [adressServer, setAdressServer] = React.useState(adress || "");
+  const [passwordField, setPassword] = React.useState(password || "");
+  
+  const handleSubmit = () => {
+    const idGen = Math.floor(Math.random() * 100000) + 1;
+
+    const data: IServerItem = {
+      id: idGen,
+      name: nameServer,
+      adress: adressServer,
+      typeAuth: isPassword ? "password" : "key",
+      password: password,
+    };
+
+    if (isChanged) {
+      serverStore.changeReview({
+        id: id || idGen,
+        name: data.name,
+        adress: data.adress,
+        typeAuth: data.typeAuth,
+        password: data.password,
+      });
+      onClose();
+
+      return;
+    }
+
+    serverStore.addNewServer(data);
+    onClose();
+  };
 
   return (
     <React.Fragment>
@@ -33,8 +66,43 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
             required
             margin="dense"
             id="name"
+            name="name"
+            label="Имя сервера"
+            value={nameServer}
+            onChange={(e) => setNameServer(e.target.value)}
+            type="text"
+            fullWidth
+            variant="standard"
+            placeholder="Введите имя сервера"
+            sx={{
+              "& .MuiInput-underline:before": {
+                borderBottom: "1px solid white", // белое подчеркивание до фокуса
+              },
+              "& .MuiInput-underline:hover:before": {
+                borderBottom: "1px solid white", // белое подчеркивание при наведении
+              },
+              "& .MuiInput-underline:after": {
+                borderBottom: "2px solid white", // белое подчеркивание при фокусе
+              },
+              "& .MuiInputBase-input": {
+                color: "white", // цвет текста
+              },
+              "& .MuiInputLabel-root": {
+                color: "white", // цвет текста лейбла
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "white", // цвет лейбла при фокусе
+              },
+            }}
+          />
+          <TextField
+            required
+            margin="dense"
+            id="name"
             name="server"
             label="Адрес сервера"
+            value={adressServer}
+            onChange={(e) => setAdressServer(e.target.value)}
             type="text"
             fullWidth
             variant="standard"
@@ -102,6 +170,8 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
               label="Пароль"
               id="password"
               variant="standard"
+              value={passwordField}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Введите адрес"
               InputLabelProps={{
                 sx: {
@@ -131,7 +201,9 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Отмена</Button>
-          <Button type="submit">Подключиться</Button>
+          <Button onClick={handleSubmit} type="submit">
+            {isChanged ? "Изменить" : "Подключиться"}
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

@@ -27,7 +27,9 @@ class ServerStore {
   }
 
   changeReview(server: IServerItem) {
-    const index = this.state.servers.findIndex((server) => server.id === server.id);
+    console.log(server.id);
+    console.log(this.state.servers);
+    const index = this.state.servers.findIndex((s) => s.id === server.id);
     if (index > -1) {
       this.state.servers[index] = server;
     }
