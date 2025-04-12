@@ -16,6 +16,8 @@ interface IProps {
 export const ServerFormModal: React.FC<IProps> = (props) => {
   const { onClose, open } = props;
 
+  const [isPassword, setShowPassword] = React.useState(false);
+
   return (
     <React.Fragment>
       <Dialog sx={{ "& .MuiPaper-root": { background: "#1e1e1e" } }} open={open} onClose={onClose}>
@@ -79,51 +81,53 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
               }}
             >
               <FormControlLabel
-                value="female"
-                control={<Radio />}
+                value={false}
+                control={<Radio checked={!isPassword} onChange={() => setShowPassword(false)} />}
                 label="Аутентификация по ключу"
                 sx={{ color: "white" }} // Белый цвет для текста
               />
               <FormControlLabel
-                value="male"
-                control={<Radio />}
+                value={true}
+                control={<Radio checked={isPassword} onChange={() => setShowPassword(true)} />}
                 label="Аутентификация по паролю"
                 sx={{ color: "white" }} // Белый цвет для текста
               />
             </RadioGroup>
           </div>
-          <TextField
-          className="!mt-5"
-          type="password"
-            fullWidth
-            label="Пароль"
-            id="password"
-            variant="standard"
-            placeholder="Введите адрес"
-            InputLabelProps={{
-              sx: {
-                color: "white",
-              },
-            }}
-            InputProps={{
-              sx: {
-                color: "white",
-                "&::placeholder": {
+          {isPassword && (
+            <TextField
+              className="!mt-5"
+              type="password"
+              fullWidth
+              label="Пароль"
+              id="password"
+              variant="standard"
+              placeholder="Введите адрес"
+              InputLabelProps={{
+                sx: {
                   color: "white",
-                  opacity: 1,
                 },
-                "&:before": {
-                  borderBottom: "1px solid white",
+              }}
+              InputProps={{
+                sx: {
+                  color: "white",
+                  "&::placeholder": {
+                    color: "white",
+                    opacity: 1,
+                  },
+                  "&:before": {
+                    borderBottom: "1px solid white",
+                  },
+                  "&:hover:not(.Mui-disabled):before": {
+                    borderBottom: "1px solid white",
+                  },
+                  "&:after": {
+                    borderBottom: "2px solid white",
+                  },
                 },
-                "&:hover:not(.Mui-disabled):before": {
-                  borderBottom: "1px solid white",
-                },
-                "&:after": {
-                  borderBottom: "2px solid white",
-                },
-              },
-            }}
-          />
+              }}
+            />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Отмена</Button>
