@@ -16,6 +16,7 @@ const collapsedWidth = 60;
 
 interface IProps {
   children: React.ReactNode;
+  title: string
 }
 
 export const Layout: React.FC<IProps> = (props) => {
@@ -116,8 +117,8 @@ export const Layout: React.FC<IProps> = (props) => {
                 <MenuIcon />
               </IconButton>
             )}
-            <div className="!justify-center flex items-center h-full">
-              <p className="!text-sm !h-fit mb-5">Terminal</p>
+            <div className="!justify-center flex items-center h-full w-full">
+              <p className="!text-sm !h-fit mb-5 ">{props.title}</p>
             </div>
           </Toolbar>
         </AppBar>

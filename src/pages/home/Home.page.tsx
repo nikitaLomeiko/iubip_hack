@@ -8,7 +8,7 @@ const HomePage = () => {
   console.log(session)
   return (
     <div className="bg-gray-600 overflow-hidden">
-      <Layout>
+      <Layout title="terminal • MySession2">
         <div className="bg-[#151719] h-full">
           <Terminal/>
         </div>

@@ -20,7 +20,7 @@ const ServerPage = () => {
 
   return (
     <div className="bg-gray-600 overflow-hidden">
-      <Layout>
+      <Layout title="Server">
         <div className="bg-[#151719] h-full p-2">{server && <ServerPreview server={server} />}</div>
       </Layout>
     </div>
