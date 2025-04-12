@@ -5,7 +5,13 @@ import { useEffect, useRef, useState } from "react";
 const charWidth = 9;
 const charHeight = 18;
 
-export const Terminal = () => {
+interface IProps {
+  sessionName?: string;
+}
+
+export const Terminal: React.FC<IProps> = (props) => {
+  const { sessionName } = props;
+
   const [verify, setVerify] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -25,7 +31,8 @@ export const Terminal = () => {
   }, [instance, containerRef]);
 
   instance?.onData(async (data) => {
-    await fetch("https://ыыыы.спб.рф/api/sessions/1/io/", { method: "POST", body: data });
+    console.log(sessionName)
+    await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "POST", body: data });
   });
   instance?.resize(50, 50);
 

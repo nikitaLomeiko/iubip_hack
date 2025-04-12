@@ -30,7 +30,7 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
         y: 50
       }
 
-      fetch("http://45.10.41.195:8088/servers/{srvid}/sessions", {
+      fetch("https://ыыыы.спб.рф/api/servers/{srvid}/sessions/", {
         method: "POST", body: JSON.stringify(sess)
       });
 

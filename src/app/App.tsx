@@ -4,10 +4,9 @@ import "./styles/index.css";
 import { ISessionItem, sessionStore } from "entities/session-item";
 
 function App() {
-
   useEffect(() => {
     const request = async () => {
-      const data: ISessionItem[] = await fetch("http://45.10.41.195:8088/servers/{srvid}/sessions", {
+      const data: ISessionItem[] = await fetch("https://ыыыы.спб.рф/api/servers/{srvid}/sessions/", {
         method: "GET",
       }).then((data) => data.json());
       sessionStore.addListSessions(data);
