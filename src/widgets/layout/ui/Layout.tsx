@@ -78,7 +78,7 @@ export const Layout: React.FC<IProps> = (props) => {
         <div className="p-2">
           <Divider className="after:bg-white/30 before:bg-white/30">Сессии</Divider>
           <div className="mt-8">
-            <SessionsList sessions={["Сессия1", "Сессия2", "Сессия3"]} />
+            <SessionsList />
             <Button onClick={() => setOpenFormSession(true)} className="w-full !mt-8" variant="outlined">
               Добавить сессию
             </Button>

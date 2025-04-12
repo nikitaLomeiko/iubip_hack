@@ -1,34 +1,25 @@
-import WatchLaterIcon from "@mui/icons-material/WatchLater";
-import CreateIcon from "@mui/icons-material/Create";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { SessionItem, sessionStore } from "entities/session-item";
+import { observer } from "mobx-react-lite";
 
-interface IProps {
-  sessions: string[];
-}
 
-export const SessionsList: React.FC<IProps> = (props) => {
-  const { sessions } = props;
+export const SessionsList: React.FC = observer(() => {
+  const {
+    state: { sessions },
+  } = sessionStore;
 
   return (
     <ul className="flex flex-col gap-4 px-4">
+      {sessions.length === 0 && <p className="!text-white/40 !w-full !text-center">Сессий нет</p>}
       {sessions.map((item) => (
         <li>
-          <div className="flex flex-row items-center justify-between gap-2">
-            <div className="flex flex-row items-center gap-2">
-              <WatchLaterIcon className="!size-4 !fill-white/70" />
-              <p className="!text-sm text-white/80">{item}</p>
-            </div>
-            <div className="flex flex-row gap-2">
-              <button>
-                <CreateIcon className="!size-4 !fill-white/40" />
-              </button>
-              <button>
-                <DeleteIcon className="!size-4 !fill-white/40" />
-              </button>
-            </div>
-          </div>
+          <SessionItem
+            value={item.name}
+            onChange={(data) => sessionStore.changeSession({ id: item.id, name: data })}
+            onClick={() => null}
+            onRemove={() => sessionStore.deleteSession(item.id)}
+          />
         </li>
       ))}
     </ul>
   );
-};
+});
