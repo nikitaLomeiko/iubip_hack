@@ -1,11 +1,15 @@
 import { SessionItem, sessionStore } from "entities/session-item";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router";
+import { RoutePath } from "shared/config/route";
 
 
 export const SessionsList: React.FC = observer(() => {
   const {
     state: { sessions },
   } = sessionStore;
+
+  const navigate = useNavigate()
 
   return (
     <ul className="flex flex-col gap-4 px-4">
@@ -15,7 +19,7 @@ export const SessionsList: React.FC = observer(() => {
           <SessionItem
             value={item.name}
             onChange={(data) => sessionStore.changeSession({ id: item.id, name: data })}
-            onClick={() => null}
+            onClick={() => navigate(`${RoutePath.home.path}/${item.id}`)}
             onRemove={() => sessionStore.deleteSession(item.id)}
           />
         </li>

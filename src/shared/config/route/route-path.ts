@@ -8,7 +8,7 @@ enum enumPath {
 export const RoutePath: Record<enumPath, IRoute> = {
   [enumPath.home]: {
     path: "/home",
-    fullPath: "/home",
+    fullPath: "/home/:session?",
   },
   [enumPath.signup]: {
     path: "/sign/up",
