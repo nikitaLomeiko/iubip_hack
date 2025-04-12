@@ -16,6 +16,8 @@ import DnsIcon from "@mui/icons-material/Dns";
 import { TabBar } from "./components/Tabbar";
 import { KeysList } from "./components/Keys.list";
 import { KeyFormModal } from "features/key-form";
+import { observer } from "mobx-react-lite";
+import { tabStore } from "../model/mobx/tab.mobx";
 
 const drawerWidth = 290;
 const collapsedWidth = 60;
@@ -25,7 +27,7 @@ interface IProps {
   title: string;
 }
 
-export const Layout: React.FC<IProps> = (props) => {
+export const Layout: React.FC<IProps> = observer((props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -36,7 +38,8 @@ export const Layout: React.FC<IProps> = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
-  const [tab, setTab] = useState<"sessions" | "servers" | "keys">("sessions");
+  const {state: {tab}} = tabStore
+
 
   const handleDrawerToggle = () => {
     if (isMobile) {
@@ -84,7 +87,7 @@ export const Layout: React.FC<IProps> = (props) => {
             <h1 className="!m-0 !mb-2 w-full">ысысаш</h1>
           </div>
         </Toolbar>
-        <TabBar onTab={setTab} />
+        <TabBar/>
         <div className="p-2 h-full flex flex-col">
           {tab === "sessions" && (
             <>
@@ -105,15 +108,15 @@ export const Layout: React.FC<IProps> = (props) => {
             </>
           )}
           <div className="flex flex-col mt-auto gap-4">
-            <Button onClick={() => setOpenFormSession(true)} className="w-full flex flex-row gap-1" variant="outlined">
+            <Button onClick={() => {tabStore.changeTab('sessions'); setOpenFormSession(true)}} className="w-full flex flex-row gap-1" variant="outlined">
               <AddLinkIcon />
               <p>Добавить сессию</p>
             </Button>
-            <Button onClick={() => setOpenFormSever(true)} className="w-full flex flex-row gap-1" variant="outlined">
+            <Button onClick={() => {tabStore.changeTab('servers'); setOpenFormSever(true)}} className="w-full flex flex-row gap-1" variant="outlined">
               <DnsIcon />
               <p>Подключить сервер</p>
             </Button>
-            <Button onClick={() => setOpenFormKey(true)} className="w-full flex flex-row gap-1" variant="outlined">
+            <Button onClick={() => {tabStore.changeTab('keys'); setOpenFormKey(true)}} className="w-full flex flex-row gap-1" variant="outlined">
               <KeyIcon />
               <p>Добавить ключ</p>
             </Button>
@@ -152,4 +155,4 @@ export const Layout: React.FC<IProps> = (props) => {
       </Box>
     </Box>
   );
-};
+});

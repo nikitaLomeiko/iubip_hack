@@ -35,13 +35,6 @@ class SessionStore {
   deleteSession(name: string) {
     this.state.sessions = this.state.sessions.filter((session) => session.name !== name);
   }
-
-  changeSession(name: string, session: ISessionItem) {
-    const index = this.state.sessions.findIndex((s) => s.name === name);
-    if (index > -1) {
-      this.state.sessions[index] = session;
-    }
-  }
 }
 
 export const sessionStore = new SessionStore();

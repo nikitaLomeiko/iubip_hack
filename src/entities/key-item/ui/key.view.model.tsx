@@ -19,7 +19,7 @@ interface IProps {
 export const KeyViewModel: React.FC<IProps> = (props) => {
   const { onClose, open, keyItem } = props;
 
-  const [isBlur, setBlur] = React.useState(false);
+  const [isBlur, setBlur] = React.useState(true);
 
   return (
     <React.Fragment>
@@ -28,15 +28,27 @@ export const KeyViewModel: React.FC<IProps> = (props) => {
         <DialogContent>
           <DialogContentText className="!text-white">
             <div>
-              <div className="rounded-t-lg border-gray-400 border-1 px-2 py-2 bg-gray-400/10">key</div>
+              <div className="rounded-t-lg border-gray-400 border-1 px-2 py-2 bg-gray-400/10">private key</div>
               <div className="border-gray-400 border-1 px-2 py-4">
-                <div className={`break-words text-white/90 text-[12px] transition-all ${isBlur && 'blur-sm opacity-55'}`}>{keyItem.key}</div>
+                <div
+                  className={`break-words text-white/90 text-[12px] transition-all ${isBlur && "blur-sm opacity-55"}`}
+                >
+                  {keyItem.viewKey}
+                </div>
               </div>
-              <div className="rounded-b-lg border-gray-400 border-1 px-2 py-2 flex flex-row gap-3">
+              <div className="border-gray-400 border-1 px-2 py-1">
                 <button onClick={() => setBlur(!isBlur)}>
                   {isBlur ? <RemoveRedEyeIcon className="!size-4" /> : <VisibilityOffIcon className="!size-4" />}
                 </button>
-                <button>
+              </div>
+              <div className="border-gray-400 border-1 bg-gray-400/10 px-2 py-2">
+                <div>public key</div>
+              </div>
+              <div className="border-gray-400 border-1 px-2 py-4">
+                <div className={`break-words text-white/90 text-[12px] transition-all`}>{keyItem.key}</div>
+              </div>
+              <div className="rounded-b-lg border-gray-400 border-1 px-2 py-2 flex flex-row gap-3">
+                <button onClick={() => {  navigator.clipboard.writeText(keyItem.viewKey)}}>
                   <ContentCopyIcon className="!size-4" />
                 </button>
               </div>

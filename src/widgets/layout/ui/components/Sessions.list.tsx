@@ -17,7 +17,6 @@ export const SessionsList: React.FC = observer(() => {
         <li className={`px-4 py-1 transition-colors rounded-sm ${item.name === session && 'bg-blue-600/40'}`}>
           <SessionItem
             value={item.name}
-            onChange={(data) => sessionStore.changeSession(item.name,{ name: data, serverId: item.serverId, history: item.history })}
             onClick={() => navigate(`${RoutePath.home.path}/${item.name}`)}
             onRemove={() => sessionStore.deleteSession(item.name)}
           />

@@ -1,7 +1,5 @@
 import { ServerItem, serverStore } from "entities/server-item";
-import { ISessionItem } from "entities/session-item";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { RoutePath } from "shared/config/route";
 

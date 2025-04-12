@@ -25,15 +25,6 @@ class ServerStore {
   deleteServer(id: number) {
     this.state.servers = this.state.servers.filter((server) => server.id !== id);
   }
-
-  changeReview(server: IServerItem) {
-    console.log(server.id);
-    console.log(this.state.servers);
-    const index = this.state.servers.findIndex((s) => s.id === server.id);
-    if (index > -1) {
-      this.state.servers[index] = server;
-    }
-  }
 }
 
 export const serverStore = new ServerStore();

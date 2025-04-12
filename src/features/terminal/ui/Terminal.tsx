@@ -16,9 +16,12 @@ export const Terminal: React.FC<IProps> = (props) => {
   const [verify, setVerify] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { instance, ref } = useXTerm();
+  const [isBreakWhile, setBreakWhile] = useState(false);
 
   useEffect(() => {
-    instance?.clear()
+    setTimeout(() => {
+      instance?.clear();
+    }, 1000);
     if (sessionStore.state.sessions.find((item) => item.name === sessionName)?.history) {
       sessionStore.state.sessions
         .find((item) => item.name === sessionName)
@@ -31,6 +34,13 @@ export const Terminal: React.FC<IProps> = (props) => {
   useEffect(() => {
     if (!instance || !containerRef.current) return;
 
+    const request = async (x: number, y: number) => {
+      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/resize/`, {
+        method: "POST",
+        body: JSON.stringify({ x, y }),
+      });
+    };
+
     const sidebarWidth = window.innerWidth > 900 ? 290 : 0;
     const usableWidth = window.innerWidth - sidebarWidth;
     const usableHeight = window.innerHeight;
@@ -39,6 +49,7 @@ export const Terminal: React.FC<IProps> = (props) => {
     const rows = Math.floor(usableHeight / charHeight);
 
     instance.resize(cols, rows);
+    request(cols, rows);
   }, [instance, containerRef]);
 
   instance?.resize(50, 50);
@@ -48,14 +59,20 @@ export const Terminal: React.FC<IProps> = (props) => {
       await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "POST", body: data });
     });
 
-    const asyncFetch = async () => {
-      while (true) {
-        const data = await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "GET" });
-        const peremennaya = await data.bytes();
-        instance?.write(peremennaya);
+    let isStop = false
 
-        if (sessionName) sessionStore.saveTerminal(sessionName, peremennaya);
-      }
+    const asyncFetch = async () => {
+      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "GET" }).then(
+        async (dat) => {
+          const peremennaya = await dat.bytes();
+          instance?.write(peremennaya);
+          if (sessionName) sessionStore.saveTerminal(sessionName, peremennaya);
+
+          if(!isStop){
+            await asyncFetch()
+          }
+        }
+      );
     };
 
     if (verify) {
@@ -65,8 +82,9 @@ export const Terminal: React.FC<IProps> = (props) => {
     }
 
     return () => {
-      onDataId?.dispose()
-    }
+      onDataId?.dispose();
+      isStop = true;
+    };
   }, [instance, sessionName]);
 
   return (
