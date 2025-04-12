@@ -5,18 +5,22 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { SessionsList } from "./components/Sessions.list";
 import { ServersList } from "./components/Servers.list";
-import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import TerminalIcon from "@mui/icons-material/Terminal";
 import { ServerFormModal } from "features/server-form";
 import { SessionFormModal } from "features/session-form";
+import KeyIcon from "@mui/icons-material/Key";
+import AddLinkIcon from "@mui/icons-material/AddLink";
+import DnsIcon from "@mui/icons-material/Dns";
 
-const drawerWidth = 240;
+import { TabBar } from "./components/Tabbar";
+
+const drawerWidth = 290;
 const collapsedWidth = 60;
 
 interface IProps {
   children: React.ReactNode;
-  title: string
+  title: string;
 }
 
 export const Layout: React.FC<IProps> = (props) => {
@@ -26,9 +30,10 @@ export const Layout: React.FC<IProps> = (props) => {
   const [openFormSever, setOpenFormSever] = useState(false);
   const [openFormSession, setOpenFormSession] = useState(false);
 
-
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+
+  const [tab, setTab] = useState<"sessions" | "servers" | "keys">("sessions");
 
   const handleDrawerToggle = () => {
     if (isMobile) {
@@ -76,22 +81,34 @@ export const Layout: React.FC<IProps> = (props) => {
             <h1 className="!m-0 !mb-2 w-full">ысысаш</h1>
           </div>
         </Toolbar>
-        <div className="p-2">
-          <Divider className="after:bg-white/30 before:bg-white/30">Сессии</Divider>
-          <div className="mt-8">
-            <SessionsList />
-            <Button onClick={() => setOpenFormSession(true)} className="w-full !mt-8" variant="outlined">
-              Добавить сессию
+        <TabBar onTab={setTab} />
+        <div className="p-2 h-full flex flex-col">
+          {tab === "sessions" && (
+            <>
+              <SessionsList />
+              <SessionFormModal open={openFormSession} onClose={() => setOpenFormSession(false)} />
+            </>
+          )}
+          {tab === "servers" && (
+            <>
+              <ServersList />
+              <ServerFormModal open={openFormSever} onClose={() => setOpenFormSever(false)} />
+            </>
+          )}
+          {tab === "keys" && <SessionsList />}
+          <div className="flex flex-col mt-auto gap-4">
+            <Button onClick={() => setOpenFormSession(true)} className="w-full flex flex-row gap-1" variant="outlined">
+              <AddLinkIcon />
+              <p>Добавить сессию</p>
             </Button>
-            <SessionFormModal open={openFormSession} onClose={() => setOpenFormSession(false)} />
-          </div>
-          <Divider className="after:bg-white/30 before:bg-white/30 !mt-10">Сервера</Divider>
-          <div className="mt-8">
-            <ServersList />
-            <Button onClick={() => setOpenFormSever(true)} className="w-full !mt-8" variant="outlined">
-              Подключить сервер
+            <Button onClick={() => setOpenFormSever(true)} className="w-full flex flex-row gap-1" variant="outlined">
+              <DnsIcon />
+              <p>Подключить сервер</p>
             </Button>
-            <ServerFormModal open={openFormSever} onClose={() => setOpenFormSever(false)} />
+            <Button onClick={() => setOpenFormSession(true)} className="w-full flex flex-row gap-1" variant="outlined">
+              <KeyIcon />
+              <p>Добавить ключ</p>
+            </Button>
           </div>
         </div>
       </Drawer>
