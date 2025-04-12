@@ -22,13 +22,22 @@ class SessionStore {
     this.state.sessions.push(session);
   }
 
+  saveTerminal(name: string, history: Uint8Array<ArrayBufferLike>) {
+    const index = this.state.sessions.findIndex((s) => s.name === name);
+    if (index > -1) {
+      if (!this.state.sessions[index].history) {
+        this.state.sessions[index].history = [];
+      }
+      this.state.sessions[index].history.push(history);
+    }
+  }
+
   deleteSession(name: string) {
     this.state.sessions = this.state.sessions.filter((session) => session.name !== name);
   }
 
   changeSession(name: string, session: ISessionItem) {
     const index = this.state.sessions.findIndex((s) => s.name === name);
-    console.log(session);
     if (index > -1) {
       this.state.sessions[index] = session;
     }

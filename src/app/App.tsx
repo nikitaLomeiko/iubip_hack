@@ -17,7 +17,7 @@ function App() {
 
   return (
     <Suspense fallback="Загрузка...">
-      <Routing />
+        <Routing />
     </Suspense>
   );
 }
