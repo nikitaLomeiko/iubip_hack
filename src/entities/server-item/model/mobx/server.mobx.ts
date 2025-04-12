@@ -15,7 +15,7 @@ class ServerStore {
   }
 
   addListServer(servers: IServerItem[]) {
-    this.state.servers = [...this.state.servers, ...servers];
+    this.state.servers = servers;
   }
 
   addNewServer(servers: IServerItem) {

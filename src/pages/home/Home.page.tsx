@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <div className="bg-gray-600 overflow-hidden">
       <Layout title="terminal • MySession2">
-        <div className="bg-[#151719] h-full">
+        <div className="bg-[#151719] h-full overflow-hidden">
           <Terminal/>
         </div>
       </Layout>

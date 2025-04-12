@@ -1,4 +1,4 @@
 export interface ISessionItem {
-    id: number,
-    name: string
+  name: string;
+  serverId: string;
 }

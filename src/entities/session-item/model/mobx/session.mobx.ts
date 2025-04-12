@@ -15,19 +15,20 @@ class SessionStore {
   }
 
   addListSessions(sessions: ISessionItem[]) {
-    this.state.sessions = [...this.state.sessions, ...sessions];
+    this.state.sessions = sessions;
   }
 
   addNewSession(session: ISessionItem) {
     this.state.sessions.push(session);
   }
 
-  deleteSession(id: number) {
-    this.state.sessions = this.state.sessions.filter((session) => session.id !== id);
+  deleteSession(name: string) {
+    this.state.sessions = this.state.sessions.filter((session) => session.name !== name);
   }
 
-  changeSession(session: ISessionItem) {
-    const index = this.state.sessions.findIndex((session) => session.id === session.id);
+  changeSession(name: string, session: ISessionItem) {
+    const index = this.state.sessions.findIndex((s) => s.name === name);
+    console.log(session);
     if (index > -1) {
       this.state.sessions[index] = session;
     }

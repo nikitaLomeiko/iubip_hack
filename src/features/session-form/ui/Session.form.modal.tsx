@@ -7,7 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { sessionStore } from "entities/session-item";
+import { ISessionItem, sessionStore } from "entities/session-item";
 
 interface IProps {
   open: boolean;
@@ -19,12 +19,23 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
 
   const [name, setName] = React.useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (name.trim().length > 5) {
       const id = Math.floor(Math.random() * 100000) + 1;
 
+      const sess = {
+        cmd: "",
+        sid: name,
+        x: 50,
+        y: 50
+      }
+
+      fetch("http://45.10.41.195:8088/servers/{srvid}/sessions", {
+        method: "POST", body: JSON.stringify(sess)
+      });
+
       sessionStore.addNewSession({ id, name });
-      onClose()
+      onClose();
     }
   };
 
@@ -112,7 +123,9 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Отмена</Button>
-          <Button onClick={handleSubmit} type="submit">Создать</Button>
+          <Button onClick={handleSubmit} type="submit">
+            Создать
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

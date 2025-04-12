@@ -1,15 +1,15 @@
-import { SessionItem, sessionStore } from "entities/session-item";
+import { ISessionItem, SessionItem, sessionStore } from "entities/session-item";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { RoutePath } from "shared/config/route";
-
 
 export const SessionsList: React.FC = observer(() => {
   const {
     state: { sessions },
   } = sessionStore;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <ul className="flex flex-col gap-4 px-4">
@@ -18,9 +18,9 @@ export const SessionsList: React.FC = observer(() => {
         <li>
           <SessionItem
             value={item.name}
-            onChange={(data) => sessionStore.changeSession({ id: item.id, name: data })}
-            onClick={() => navigate(`${RoutePath.home.path}/${item.id}`)}
-            onRemove={() => sessionStore.deleteSession(item.id)}
+            onChange={(data) => sessionStore.changeSession(item.name,{ name: data, serverId: item.serverId })}
+            onClick={() => navigate(`${RoutePath.home.path}/${item.name}`)}
+            onRemove={() => sessionStore.deleteSession(item.name)}
           />
         </li>
       ))}

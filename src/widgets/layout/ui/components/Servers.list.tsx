@@ -1,5 +1,7 @@
 import { ServerItem, serverStore } from "entities/server-item";
+import { ISessionItem } from "entities/session-item";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { RoutePath } from "shared/config/route";
 
@@ -19,7 +21,7 @@ export const ServersList: React.FC = observer(() => {
             key={item.id}
             server={item}
             onClick={() => navigate(`${RoutePath.server.path}/${item.id}`)}
-            onRemove={() => serverStore.deleteServer(item.id)}
+            onRemove={() => serverStore.deleteServer(item.id || 0)}
           />
         </li>
       ))}

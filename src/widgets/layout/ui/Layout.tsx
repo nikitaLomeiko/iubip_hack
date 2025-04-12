@@ -27,12 +27,11 @@ interface IProps {
 
 export const Layout: React.FC<IProps> = (props) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [openFormSever, setOpenFormSever] = useState(false);
   const [openFormSession, setOpenFormSession] = useState(false);
   const [openFormKey, setOpenFormKey] = useState(false);
-
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -122,7 +121,7 @@ export const Layout: React.FC<IProps> = (props) => {
         </div>
       </Drawer>
       <Box
-        className="transition-all"
+        className="transition-all w-full"
         component="main"
         sx={{
           flexGrow: 1,
@@ -149,7 +148,7 @@ export const Layout: React.FC<IProps> = (props) => {
           </Toolbar>
         </AppBar>
 
-        <Box style={{ height: "calc(100vh - 40px)" }}>{props.children}</Box>
+        <Box className='overflow-hidden' style={{ height: "calc(100vh - 40px)" }}>{props.children}</Box>
       </Box>
     </Box>
   );
