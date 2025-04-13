@@ -2,6 +2,8 @@ import { useXTerm } from "react-xtermjs";
 import "./style.css";
 import { useEffect, useRef, useState } from "react";
 import { sessionStore } from "entities/session-item";
+import { useNavigate } from "react-router";
+import { RoutePath } from "shared/config/route";
 
 const charWidth = 9;
 const charHeight = 18;
@@ -17,6 +19,8 @@ export const Terminal: React.FC<IProps> = (props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { instance, ref } = useXTerm();
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     if (sessionStore.state.sessions.find((item) => item.name === sessionName)?.history) {
       sessionStore.state.sessions
@@ -31,7 +35,7 @@ export const Terminal: React.FC<IProps> = (props) => {
     if (!instance || !containerRef.current) return;
 
     const request = async (x: number, y: number) => {
-      await fetch(`http://ыыыы.спб.рф:8088/sessions/${sessionName}/resize/`, {
+      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/resize/`, {
         method: "POST",
         body: JSON.stringify({ x, y }),
       });
@@ -39,7 +43,7 @@ export const Terminal: React.FC<IProps> = (props) => {
 
     const sidebarWidth = window.innerWidth > 900 ? 290 : 0;
     const usableWidth = window.innerWidth - sidebarWidth;
-    const usableHeight = window.innerHeight-40;
+    const usableHeight = window.innerHeight - 40;
 
     const cols = Math.floor(usableWidth / charWidth);
     const rows = Math.floor(usableHeight / charHeight);
@@ -54,24 +58,38 @@ export const Terminal: React.FC<IProps> = (props) => {
     const controller = new AbortController();
     const signal = controller.signal;
     const onDataId = instance?.onData(async (data) => {
-      await fetch(`http://ыыыы.спб.рф:8088/sessions/${sessionName}/io/`, { method: "POST", body: data });
+      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "POST", body: data });
     });
 
     let isStop = false;
+    let isError = false;
 
     const asyncFetch = async () => {
-      await fetch(`http://ыыыы.спб.рф:8088/sessions/${sessionName}/io/`, { method: "GET", signal }).then(
+      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "GET", signal }).then(
         async (dat) => {
+          if (dat.status !== 200) {
+            isError = true;
+          }
+
           const peremennaya = await dat.bytes();
 
           if (!isStop) {
             instance?.write(peremennaya);
             if (sessionName) sessionStore.saveTerminal(sessionName, peremennaya);
           }
+          
+          if (isError) {
+            onDataId?.dispose();
+            isStop = true;
+            controller.abort();
+            navigate(RoutePath.home.path)
+            sessionStore.deleteSession(sessionName || '')
+          }
 
           if (!isStop) {
             await asyncFetch();
           }
+
         }
       );
     };

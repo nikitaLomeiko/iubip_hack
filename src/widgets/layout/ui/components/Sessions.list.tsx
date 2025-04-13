@@ -11,7 +11,7 @@ export const SessionsList: React.FC = observer(() => {
   const navigate = useNavigate();
 
   const handleRemove = async (name: string) => {
-    await fetch(`http://ыыыы.спб.рф:8088/sessions/${name}`, { method: "DELETE" });
+    await fetch(`https://ыыыы.спб.рф/api/sessions/${name}`, { method: "DELETE" });
     sessionStore.deleteSession(name);
     navigate(RoutePath.home.path)
   };

@@ -8,15 +8,15 @@ import { IServerItem, serverStore } from "entities/server-item";
 function App() {
   useEffect(() => {
     const request = async () => {
-      const sessions: ISessionItem[] = await fetch("http://ыыыы.спб.рф:8088/servers/{srvid}/sessions/", {
+      const sessions: ISessionItem[] = await fetch("https://ыыыы.спб.рф/api/servers/{srvid}/sessions/", {
         method: "GET"
       }).then((data) => data.json());
 
-      const keys: IKeyItem[] = await fetch("http://ыыыы.спб.рф:8088/keys/", {
+      const keys: IKeyItem[] = await fetch("https://ыыыы.спб.рф/api/keys/", {
         method: "GET"
       }).then((data) => data.json()).then((data) => Object.values(data)); 
 
-      const servers: IServerItem[] = await fetch("http://ыыыы.спб.рф:8088/servers/", {
+      const servers: IServerItem[] = await fetch("https://ыыыы.спб.рф/api/servers/", {
         method: "GET"
       }).then((data) => data.json());
       sessionStore.addListSessions(sessions);

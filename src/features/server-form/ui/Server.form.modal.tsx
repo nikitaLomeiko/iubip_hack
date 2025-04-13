@@ -36,7 +36,7 @@ export const ServerFormModal: React.FC<IProps> = observer((props) => {
       key_file: key,
     };
 
-    await fetch("http://ыыыы.спб.рф:8088/servers/", {
+    await fetch("https://ыыыы.спб.рф/api/servers/", {
       method: "POST",
       body: JSON.stringify({key_name: key, addr: adressServer, name: nameServer, user: username})
     });

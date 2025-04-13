@@ -27,7 +27,6 @@ export const SessionFormModal: React.FC<IProps> = observer((props) => {
   const [serverId, setServerId] = React.useState('');
 
   const handleSubmit = async () => {
-    if (name.trim().length > 5) {
       const sess = {
         cmd: "",
         sid: name,
@@ -35,14 +34,13 @@ export const SessionFormModal: React.FC<IProps> = observer((props) => {
         y: 50,
       };
 
-      fetch(`http://ыыыы.спб.рф:8088/servers/${serverId}/sessions/`, {
+      fetch(`https://ыыыы.спб.рф/api/servers/${serverId}/sessions/`, {
         method: "POST",
         body: JSON.stringify(sess),
       });
 
       sessionStore.addNewSession({ name, history: [], serverId: "0" });
       onClose();
-    }
   };
 
   return (
