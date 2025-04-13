@@ -3,7 +3,7 @@ import { Routing } from "./providers/routing";
 import "./styles/index.css";
 import { ISessionItem, sessionStore } from "entities/session-item";
 import { IKeyItem, keyStrore } from "entities/key-item";
-import { serverStore } from "entities/server-item";
+import { IServerItem, serverStore } from "entities/server-item";
 
 function App() {
   useEffect(() => {
@@ -16,7 +16,7 @@ function App() {
         method: "GET"
       }).then((data) => data.json()).then((data) => Object.values(data)); 
 
-      const servers: ISessionItem[] = await fetch("http://ыыыы.спб.рф:8088/servers/", {
+      const servers: IServerItem[] = await fetch("http://ыыыы.спб.рф:8088/servers/", {
         method: "GET"
       }).then((data) => data.json());
       sessionStore.addListSessions(sessions);

@@ -6,41 +6,39 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { IServerItem, serverStore } from "entities/server-item";
+import { observer } from "mobx-react-lite";
+import { keyStrore } from "entities/key-item";
 
-interface IProps extends Partial<IServerItem> {
+interface IProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const ServerFormModal: React.FC<IProps> = (props) => {
-  const { onClose, open, adress, name, password } = props;
+export const ServerFormModal: React.FC<IProps> = observer((props) => {
+  const { onClose, open } = props;
 
-  const [isPassword, setShowPassword] = React.useState(false);
-  const [nameServer, setNameServer] = React.useState(name || "");
-  const [adressServer, setAdressServer] = React.useState(adress || "");
-  const [passwordField, setPassword] = React.useState(password || "");
+  const [nameServer, setNameServer] = React.useState("");
+  const [username, setUsername] = React.useState("");
+  const [adressServer, setAdressServer] = React.useState("");
+  const [key, setKey] = React.useState("");
 
-  const handleSubmit = () => {
-    const idGen = Math.floor(Math.random() * 100000) + 1;
+  const {
+    state: { keys },
+  } = keyStrore;
 
+  const handleSubmit = async () => {
     const data: IServerItem = {
-      id: idGen,
       name: nameServer,
-      adress: adressServer,
-      typeAuth: isPassword ? "password" : "key",
-      password: password,
+      addr: adressServer,
+      user: username,
+      key_file: key,
     };
+
+    const servers: IServerItem[] = await fetch("http://ыыыы.спб.рф:8088/servers/", {
+      method: "GET",
+    }).then((data) => data.json());
 
     serverStore.addNewServer(data);
     onClose();
@@ -56,6 +54,40 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
             Ullam cumque eligendi itaque modi nesciunt suscipit eius obcaecati. Odit adipisci, ullam ipsam ab reiciendis
             amet.
           </DialogContentText>
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="username"
+            name="username"
+            label="Имя пользователя"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            type="text"
+            fullWidth
+            variant="standard"
+            placeholder="Введите имя сервера"
+            sx={{
+              "& .MuiInput-underline:before": {
+                borderBottom: "1px solid white", // белое подчеркивание до фокуса
+              },
+              "& .MuiInput-underline:hover:before": {
+                borderBottom: "1px solid white", // белое подчеркивание при наведении
+              },
+              "& .MuiInput-underline:after": {
+                borderBottom: "2px solid white", // белое подчеркивание при фокусе
+              },
+              "& .MuiInputBase-input": {
+                color: "white", // цвет текста
+              },
+              "& .MuiInputLabel-root": {
+                color: "white", // цвет текста лейбла
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "white", // цвет лейбла при фокусе
+              },
+            }}
+          />
           <TextField
             autoFocus
             required
@@ -123,108 +155,37 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
               },
             }}
           />
-          <div className="mt-8">
-            <FormLabel
-              id="radio-buttons-group-label"
-              sx={{ color: "white" }} // Стилизуем label в белый
-            >
-              Способ аутентификации
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="radio-buttons-group-label"
-              defaultValue="authenticate"
-              name="radio-buttons-group"
+          <FormControl className="!mt-5" fullWidth sx={{ color: "white" }}>
+            <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
+              Ключ
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Ключ"
+              value={key}
+              onChange={(e) => setKey(e.target.value)}
               sx={{
-                "& .MuiFormControlLabel-root": {
-                  color: "white", // Белый цвет для каждой метки (label) радио кнопки
+                color: "white",
+                ".MuiOutlinedInput-notchedOutline": {
+                  borderColor: "white",
                 },
-                "& .MuiRadio-root": {
-                  color: "white", // Белый цвет для радио кнопки
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "white",
+                },
+                ".MuiSvgIcon-root": {
+                  color: "white",
                 },
               }}
             >
-              <FormControlLabel
-                value={false}
-                control={<Radio checked={!isPassword} onChange={() => setShowPassword(false)} />}
-                label="Аутентификация по ключу"
-                sx={{ color: "white" }} // Белый цвет для текста
-              />
-              {!isPassword && (
-                <FormControl fullWidth sx={{ color: "white" }}>
-                  <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
-                    Ключ
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Ключ"
-                    onChange={() => null}
-                    sx={{
-                      color: "white",
-                      ".MuiOutlinedInput-notchedOutline": {
-                        borderColor: "white",
-                      },
-                      "&:hover .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "white",
-                      },
-                      ".MuiSvgIcon-root": {
-                        color: "white",
-                      },
-                    }}
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              )}
-              <FormControlLabel
-                value={true}
-                control={<Radio checked={isPassword} onChange={() => setShowPassword(true)} />}
-                label="Аутентификация по паролю"
-                sx={{ color: "white" }} // Белый цвет для текста
-              />
-            </RadioGroup>
-          </div>
-          {isPassword && (
-            <TextField
-              className="!mt-5"
-              type="password"
-              fullWidth
-              label="Пароль"
-              id="serverPassword"
-              variant="standard"
-              value={passwordField}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Введите адрес"
-              InputLabelProps={{
-                sx: {
-                  color: "white",
-                },
-              }}
-              InputProps={{
-                sx: {
-                  color: "white",
-                  "&::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "&:before": {
-                    borderBottom: "1px solid white",
-                  },
-                  "&:hover:not(.Mui-disabled):before": {
-                    borderBottom: "1px solid white",
-                  },
-                  "&:after": {
-                    borderBottom: "2px solid white",
-                  },
-                },
-              }}
-            />
-          )}
+              {keys.map((item) => (
+                <MenuItem value={item.name}>{item.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Отмена</Button>
@@ -235,4 +196,4 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
       </Dialog>
     </React.Fragment>
   );
-};
+});
