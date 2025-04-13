@@ -3,19 +3,20 @@ import { ServerPageLazy } from "pages/server";
 import { SignInPageLazy } from "pages/signin";
 import { RouteProps } from "react-router";
 import { RoutePath } from "shared/config/route";
+import { PrivateRoute } from "../ui/PrivateRoute";
 
 export const Routes: RouteProps[] = [
     {
         path: '/',
-        element: <HomePageLazy/>
+        element: <PrivateRoute><HomePageLazy/></PrivateRoute>
     },
     {
         path: RoutePath.home.fullPath,
-        element: <HomePageLazy/>
+        element: <PrivateRoute><HomePageLazy/></PrivateRoute>
     },
     {
         path: RoutePath.server.fullPath,
-        element: <ServerPageLazy/>
+        element: <PrivateRoute><ServerPageLazy/></PrivateRoute>
     },
     {
         path: RoutePath.signin.fullPath,

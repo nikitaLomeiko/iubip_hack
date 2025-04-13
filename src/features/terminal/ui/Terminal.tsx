@@ -16,12 +16,8 @@ export const Terminal: React.FC<IProps> = (props) => {
   const [verify, setVerify] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { instance, ref } = useXTerm();
-  const [isBreakWhile, setBreakWhile] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      instance?.clear();
-    }, 1000);
     if (sessionStore.state.sessions.find((item) => item.name === sessionName)?.history) {
       sessionStore.state.sessions
         .find((item) => item.name === sessionName)
@@ -43,7 +39,7 @@ export const Terminal: React.FC<IProps> = (props) => {
 
     const sidebarWidth = window.innerWidth > 900 ? 290 : 0;
     const usableWidth = window.innerWidth - sidebarWidth;
-    const usableHeight = window.innerHeight;
+    const usableHeight = window.innerHeight-40;
 
     const cols = Math.floor(usableWidth / charWidth);
     const rows = Math.floor(usableHeight / charHeight);
@@ -55,21 +51,26 @@ export const Terminal: React.FC<IProps> = (props) => {
   instance?.resize(50, 50);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     const onDataId = instance?.onData(async (data) => {
       await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "POST", body: data });
     });
 
-    let isStop = false
+    let isStop = false;
 
     const asyncFetch = async () => {
-      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "GET" }).then(
+      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "GET", signal }).then(
         async (dat) => {
           const peremennaya = await dat.bytes();
-          instance?.write(peremennaya);
-          if (sessionName) sessionStore.saveTerminal(sessionName, peremennaya);
 
-          if(!isStop){
-            await asyncFetch()
+          if (!isStop) {
+            instance?.write(peremennaya);
+            if (sessionName) sessionStore.saveTerminal(sessionName, peremennaya);
+          }
+
+          if (!isStop) {
+            await asyncFetch();
           }
         }
       );
@@ -84,6 +85,7 @@ export const Terminal: React.FC<IProps> = (props) => {
     return () => {
       onDataId?.dispose();
       isStop = true;
+      controller.abort();
     };
   }, [instance, sessionName]);
 

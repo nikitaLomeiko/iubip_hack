@@ -6,6 +6,7 @@ export const TabBar: React.FC = () => {
     const {state: {tab}} = tabStore
 
   const handleChange = (event: React.SyntheticEvent, newValue: 'sessions' | 'servers' | 'keys') => {
+    console.log(event)
     tabStore.changeTab(newValue)
   };
 

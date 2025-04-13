@@ -6,23 +6,31 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+} from "@mui/material";
 import { IServerItem, serverStore } from "entities/server-item";
 
 interface IProps extends Partial<IServerItem> {
   open: boolean;
   onClose: () => void;
-  isChanged?: boolean;
 }
 
 export const ServerFormModal: React.FC<IProps> = (props) => {
-  const { onClose, open, isChanged, adress, name, password, id } = props;
+  const { onClose, open, adress, name, password } = props;
 
   const [isPassword, setShowPassword] = React.useState(false);
   const [nameServer, setNameServer] = React.useState(name || "");
   const [adressServer, setAdressServer] = React.useState(adress || "");
   const [passwordField, setPassword] = React.useState(password || "");
-  
+
   const handleSubmit = () => {
     const idGen = Math.floor(Math.random() * 100000) + 1;
 
@@ -33,19 +41,6 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
       typeAuth: isPassword ? "password" : "key",
       password: password,
     };
-
-    if (isChanged) {
-      serverStore.changeReview({
-        id: id || idGen,
-        name: data.name,
-        adress: data.adress,
-        typeAuth: data.typeAuth,
-        password: data.password,
-      });
-      onClose();
-
-      return;
-    }
 
     serverStore.addNewServer(data);
     onClose();
@@ -65,8 +60,8 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
             autoFocus
             required
             margin="dense"
-            id="name"
-            name="name"
+            id="serverName"
+            name="serverName"
             label="Имя сервера"
             value={nameServer}
             onChange={(e) => setNameServer(e.target.value)}
@@ -98,8 +93,8 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
           <TextField
             required
             margin="dense"
-            id="name"
-            name="server"
+            id="serverAdress"
+            name="serverAdress"
             label="Адрес сервера"
             value={adressServer}
             onChange={(e) => setAdressServer(e.target.value)}
@@ -154,6 +149,38 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
                 label="Аутентификация по ключу"
                 sx={{ color: "white" }} // Белый цвет для текста
               />
+              {!isPassword && (
+                <FormControl fullWidth sx={{ color: "white" }}>
+                  <InputLabel id="demo-simple-select-label" sx={{ color: "white" }}>
+                    Ключ
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Ключ"
+                    onChange={() => null}
+                    sx={{
+                      color: "white",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        borderColor: "white",
+                      },
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "white",
+                      },
+                      ".MuiSvgIcon-root": {
+                        color: "white",
+                      },
+                    }}
+                  >
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
               <FormControlLabel
                 value={true}
                 control={<Radio checked={isPassword} onChange={() => setShowPassword(true)} />}
@@ -168,7 +195,7 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
               type="password"
               fullWidth
               label="Пароль"
-              id="password"
+              id="serverPassword"
               variant="standard"
               value={passwordField}
               onChange={(e) => setPassword(e.target.value)}
@@ -202,7 +229,7 @@ export const ServerFormModal: React.FC<IProps> = (props) => {
         <DialogActions>
           <Button onClick={onClose}>Отмена</Button>
           <Button onClick={handleSubmit} type="submit">
-            {isChanged ? "Изменить" : "Подключиться"}
+            Подключиться
           </Button>
         </DialogActions>
       </Dialog>

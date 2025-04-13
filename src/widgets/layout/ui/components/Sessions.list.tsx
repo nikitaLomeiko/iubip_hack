@@ -10,15 +10,20 @@ export const SessionsList: React.FC = observer(() => {
   const { session } = useParams();
   const navigate = useNavigate();
 
+  const handleRemove = async (name: string) => {
+    await fetch(`https://ыыыы.спб.рф/api/sessions/${name}`, { method: "DELETE" });
+    sessionStore.deleteSession(name);
+  };
+
   return (
     <ul className="flex flex-col">
       {sessions.length === 0 && <p className="!text-white/40 !w-full !text-center">Сессий нет</p>}
       {sessions.map((item) => (
-        <li className={`px-4 py-1 transition-colors rounded-sm ${item.name === session && 'bg-blue-600/40'}`}>
+        <li className={`px-4 py-1 transition-colors rounded-sm ${item.name === session && "bg-blue-600/40"}`}>
           <SessionItem
             value={item.name}
             onClick={() => navigate(`${RoutePath.home.path}/${item.name}`)}
-            onRemove={() => sessionStore.deleteSession(item.name)}
+            onRemove={() => handleRemove(item.name)}
           />
         </li>
       ))}
