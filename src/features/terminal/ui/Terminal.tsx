@@ -31,7 +31,7 @@ export const Terminal: React.FC<IProps> = (props) => {
     if (!instance || !containerRef.current) return;
 
     const request = async (x: number, y: number) => {
-      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/resize/`, {
+      await fetch(`http://ыыыы.спб.рф:8088/sessions/${sessionName}/resize/`, {
         method: "POST",
         body: JSON.stringify({ x, y }),
       });
@@ -54,13 +54,13 @@ export const Terminal: React.FC<IProps> = (props) => {
     const controller = new AbortController();
     const signal = controller.signal;
     const onDataId = instance?.onData(async (data) => {
-      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "POST", body: data });
+      await fetch(`http://ыыыы.спб.рф:8088/sessions/${sessionName}/io/`, { method: "POST", body: data });
     });
 
     let isStop = false;
 
     const asyncFetch = async () => {
-      await fetch(`https://ыыыы.спб.рф/api/sessions/${sessionName}/io/`, { method: "GET", signal }).then(
+      await fetch(`http://ыыыы.спб.рф:8088/sessions/${sessionName}/io/`, { method: "GET", signal }).then(
         async (dat) => {
           const peremennaya = await dat.bytes();
 

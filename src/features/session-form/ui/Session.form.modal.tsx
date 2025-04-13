@@ -25,14 +25,15 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
         cmd: "",
         sid: name,
         x: 50,
-        y: 50
-      }
+        y: 50,
+      };
 
-      fetch("https://ыыыы.спб.рф/api/servers/{srvid}/sessions/", {
-        method: "POST", body: JSON.stringify(sess)
+      fetch("http://ыыыы.спб.рф:8088/servers/{srvid}/sessions/", {
+        method: "POST",
+        body: JSON.stringify(sess),
       });
 
-      sessionStore.addNewSession({ name, history: [], serverId: '0' });
+      sessionStore.addNewSession({ name, history: [], serverId: "0" });
       onClose();
     }
   };

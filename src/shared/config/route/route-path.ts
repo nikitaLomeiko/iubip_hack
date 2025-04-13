@@ -3,7 +3,6 @@ import { IRoute } from "./types";
 enum enumPath {
   home = "home",
   server = "server",
-  signin = 'signin'
 }
 
 export const RoutePath: Record<enumPath, IRoute> = {
@@ -14,9 +13,5 @@ export const RoutePath: Record<enumPath, IRoute> = {
   [enumPath.server]: {
     path: "/server",
     fullPath: "/server/:serverId",
-  },
-  [enumPath.signin]: {
-    path: "/sign/in",
-    fullPath: "/sign/in",
   },
 };
