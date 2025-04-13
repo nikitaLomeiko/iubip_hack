@@ -7,6 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { IKeyItem, keyStrore } from "entities/key-item";
+import { sessionStore } from "entities/session-item";
 
 interface IProps {
   open: boolean;
@@ -19,17 +20,19 @@ export const KeyFormModal: React.FC<IProps> = (props) => {
   const [name, setName] = React.useState("");
   const [key, setKey] = React.useState("");
 
-  const handleSubmit = () => {
-    const idGen = Math.floor(Math.random() * 100000) + 1;
+  const handleSubmit = async () => {
+    await fetch("http://ыыыы.спб.рф:8088/keys/", {
+      method: "POST",
+      body: JSON.stringify({ content: key, name }),
+    });
 
-    const newKey: IKeyItem = {
-      id: idGen,
-      name, 
-      viewKey: key,
-      key: ''
-    };
+    const keys: IKeyItem[] = await fetch("http://ыыыы.спб.рф:8088/keys/", {
+      method: "GET",
+    })
+      .then((data) => data.json())
+      .then((data) => Object.values(data));
 
-    keyStrore.addNewKey(newKey);
+    keyStrore.addListKeys(keys);
     onClose();
   };
 
@@ -78,6 +81,7 @@ export const KeyFormModal: React.FC<IProps> = (props) => {
             }}
           />
           <TextField
+          multiline
             className="!mt-5"
             type="password"
             fullWidth

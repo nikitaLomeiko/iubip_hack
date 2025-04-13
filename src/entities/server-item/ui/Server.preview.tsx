@@ -1,6 +1,7 @@
 import { IServerItem } from "../model";
 import DnsIcon from "@mui/icons-material/Dns";
 import HomeIcon from '@mui/icons-material/Home';
+import PersonIcon from '@mui/icons-material/Person';
 
 interface IProps {
   server: IServerItem;
@@ -22,7 +23,12 @@ export const ServerPreview: React.FC<IProps> = (props) => {
       <div className="flex flex-row items-center gap-1 mt-4 !text-[12px]">
         <HomeIcon className="!size-4 !fill-white/60"/>
         <p>адрес:</p>
-        <p className="text-white/60">{server.adress}</p>
+        <p className="text-white/60">{server.addr}</p>
+      </div>
+      <div className="flex flex-row items-center gap-1 mt-4 !text-[12px]">
+        <PersonIcon className="!size-4 !fill-white/60"/>
+        <p>пользователь:</p>
+        <p className="text-white/60">{server.user}</p>
       </div>
     </div>
   );

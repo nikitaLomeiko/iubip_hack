@@ -13,6 +13,7 @@ export const SessionsList: React.FC = observer(() => {
   const handleRemove = async (name: string) => {
     await fetch(`http://ыыыы.спб.рф:8088/sessions/${name}`, { method: "DELETE" });
     sessionStore.deleteSession(name);
+    navigate(RoutePath.home.path)
   };
 
   return (

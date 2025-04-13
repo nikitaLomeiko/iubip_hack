@@ -12,9 +12,9 @@ export const KeysList: React.FC = observer(() => {
       {keys.map((item) => (
         <li>
           <KeyItem
-            key={item.id}
+            key={item.name}
             keyItem={item}
-            onRemove={() => keyStrore.deleteKey(item.id)}
+            onRemove={() => keyStrore.deleteKey(item.name)}
           />
         </li>
       ))}

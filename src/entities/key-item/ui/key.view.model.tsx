@@ -33,7 +33,7 @@ export const KeyViewModel: React.FC<IProps> = (props) => {
                 <div
                   className={`break-words text-white/90 text-[12px] transition-all ${isBlur && "blur-sm opacity-55"}`}
                 >
-                  {keyItem.viewKey}
+                  {keyItem.privkey}
                 </div>
               </div>
               <div className="border-gray-400 border-1 px-2 py-1">
@@ -45,10 +45,10 @@ export const KeyViewModel: React.FC<IProps> = (props) => {
                 <div>public key</div>
               </div>
               <div className="border-gray-400 border-1 px-2 py-4">
-                <div className={`break-words text-white/90 text-[12px] transition-all`}>{keyItem.key}</div>
+                <div className={`break-words text-white/90 text-[12px] transition-all`}>{keyItem.pubkey}</div>
               </div>
               <div className="rounded-b-lg border-gray-400 border-1 px-2 py-2 flex flex-row gap-3">
-                <button onClick={() => {  navigator.clipboard.writeText(keyItem.viewKey)}}>
+                <button onClick={() => {  navigator.clipboard.writeText(keyItem.pubkey)}}>
                   <ContentCopyIcon className="!size-4" />
                 </button>
               </div>

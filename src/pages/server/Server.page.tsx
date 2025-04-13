@@ -1,4 +1,4 @@
-import { IServerItem, ServerPreview } from "entities/server-item";
+import { IServerItem, ServerPreview, serverStore } from "entities/server-item";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Layout } from "widgets/layout";
@@ -9,14 +9,11 @@ const ServerPage = () => {
   const [server, setServer] = useState<IServerItem | null>(null);
 
   useEffect(() => {
-    setServer({
-      id: 12524,
-      adress: "123.124.12.12:8080",
-      name: "nikita.server.org",
-      typeAuth: "key",
-    });
-  }, []);
-  console.log(serverId);
+    const server = serverStore.state.servers.find((item) => item.name === serverId);
+
+    console.log(server)
+    if (server) setServer(server);
+  }, [serverId]);
 
   return (
     <div className="bg-gray-600 overflow-hidden">

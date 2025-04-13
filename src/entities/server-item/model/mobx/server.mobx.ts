@@ -22,8 +22,8 @@ class ServerStore {
     this.state.servers.push(servers);
   }
 
-  deleteServer(id: number) {
-    this.state.servers = this.state.servers.filter((server) => server.id !== id);
+  deleteServer(name: string) {
+    this.state.servers = this.state.servers.filter((server) => server.name !== name);
   }
 }
 

@@ -10,9 +10,6 @@ interface IProps {
   onRemove: () => void;
 }
 
-const KEY_TEST =
-  "-----BEGIN OPENSSH PRIVATE KEY-----b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUxOQAAACDX/RqV+djpNNm0IkiFo3Ae8A2/dbk79a+8kBEWiHmakAAAAJggDrEZIA6xGQAAAAtzc2gtZWQyNTUxOQAAACDX/RqV+djpNNm0IkiFo3Ae8A2/dbk79a+8kBEWiHmakAAAAEBAQ3FO4eSE3f9jr8LQhdMnq5+KLFOefhu2AJqMjc8UNNf9GpX52Ok02bQiSIWjcB7wDb91uTv1r7yQERaIeZqQAAAAEHplcm9Adm9pZC10aGlua3kBAgMEBQ==-----END OPENSSH PRIVATE KEY-----";
-
 export const KeyItem: React.FC<IProps> = observer((props) => {
   const { onRemove, keyItem } = props;
 
@@ -28,7 +25,7 @@ export const KeyItem: React.FC<IProps> = observer((props) => {
         <DeleteIcon className="!size-4 !fill-white/40" />
       </button>
       <KeyViewModel
-        keyItem={{ id: 1, key: KEY_TEST, name: "Ключ подключения#1", viewKey: KEY_TEST }}
+        keyItem={keyItem}
         onClose={() => setShow(false)}
         open={show}
       />

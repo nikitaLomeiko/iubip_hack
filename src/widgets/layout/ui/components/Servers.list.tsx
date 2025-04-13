@@ -16,10 +16,10 @@ export const ServersList: React.FC = observer(() => {
       {servers.map((item) => (
         <li>
           <ServerItem
-            key={item.id}
+            key={item.name}
             server={item}
-            onClick={() => navigate(`${RoutePath.server.path}/${item.id}`)}
-            onRemove={() => serverStore.deleteServer(item.id || 0)}
+            onClick={() => navigate(`${RoutePath.server.path}/${item.name}`)}
+            onRemove={() => serverStore.deleteServer(item.name)}
           />
         </li>
       ))}

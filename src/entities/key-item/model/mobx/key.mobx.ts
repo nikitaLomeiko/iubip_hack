@@ -15,15 +15,15 @@ class KeyStore {
   }
 
   addListKeys(keys: IKeyItem[]) {
-    this.state.keys = [...this.state.keys, ...keys];
+    this.state.keys = keys;
   }
 
   addNewKey(key: IKeyItem) {
     this.state.keys.push(key);
   }
 
-  deleteKey(id: number) {
-    this.state.keys = this.state.keys.filter((key) => key.id !== id);
+  deleteKey(name: string) {
+    this.state.keys = this.state.keys.filter((key) => key.name !== name);
   }
 }
 
