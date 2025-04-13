@@ -36,9 +36,10 @@ export const ServerFormModal: React.FC<IProps> = observer((props) => {
       key_file: key,
     };
 
-    const servers: IServerItem[] = await fetch("http://ыыыы.спб.рф:8088/servers/", {
-      method: "GET",
-    }).then((data) => data.json());
+    await fetch("http://ыыыы.спб.рф:8088/servers/", {
+      method: "POST",
+      body: JSON.stringify({key_name: key, addr: adressServer, name: nameServer, user: username})
+    });
 
     serverStore.addNewServer(data);
     onClose();

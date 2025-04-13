@@ -8,16 +8,23 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { sessionStore } from "entities/session-item";
+import { serverStore } from "entities/server-item";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const SessionFormModal: React.FC<IProps> = (props) => {
+export const SessionFormModal: React.FC<IProps> = observer((props) => {
   const { onClose, open } = props;
 
   const [name, setName] = React.useState("");
+  const {
+    state: { servers },
+  } = serverStore;
+
+  const [serverId, setServerId] = React.useState('');
 
   const handleSubmit = async () => {
     if (name.trim().length > 5) {
@@ -28,7 +35,7 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
         y: 50,
       };
 
-      fetch("http://ыыыы.спб.рф:8088/servers/{srvid}/sessions/", {
+      fetch(`http://ыыыы.спб.рф:8088/servers/${serverId}/sessions/`, {
         method: "POST",
         body: JSON.stringify(sess),
       });
@@ -90,6 +97,8 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Сервер"
+              value={serverId}
+              onChange={(e) => setServerId(e.target.value)}
               sx={{
                 color: "white",
                 ".MuiOutlinedInput-notchedOutline": {
@@ -114,9 +123,9 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
                 },
               }}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {servers.map((item) => (
+                <MenuItem value={item.name}>{item.name}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </DialogContent>
@@ -129,4 +138,4 @@ export const SessionFormModal: React.FC<IProps> = (props) => {
       </Dialog>
     </React.Fragment>
   );
-};
+});
